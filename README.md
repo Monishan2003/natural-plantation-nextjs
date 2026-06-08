@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Natural Plantation — Corporate Website
 
-## Getting Started
+A world-class, formal corporate marketing site for **Natural Plantation** (PV 00334432) — a
+diversified Sri Lankan group in retail/FMCG, group holding and organic agriculture, rooted in
+Kilinochchi.
 
-First, run the development server:
+Built per [`AGENT (1).md`](./AGENT%20%281%29.md) (the build contract) and the design specification
+in `compass_artifact_*.md`.
+
+## Stack
+
+- **Next.js 16** (App Router, RSC) · **TypeScript** (strict)
+- **Tailwind CSS v4** — CSS-first design tokens in `src/app/globals.css` (`@theme`)
+- **Motion** (`motion/react`) — formal, restrained animations; respects `prefers-reduced-motion`
+- **Supabase** (Postgres + Storage) — content is CMS-driven and read with the anon key under RLS
+- **next/font** — Sora (display) + Inter (body)
+
+## Pages (6)
+
+Home · About · Services · Companies · News · Contact. Continuity lives in `src/app/layout.tsx`
+(shared Header + Footer + fonts + tokens).
+
+## Data
+
+All content is read from the existing, populated Supabase project
+(`eqqczxgwrqlgrknhhjtf`): `companies`, `company_facts`, `news_articles`, `team_members`,
+`timeline_events`, and `site_settings` (home/about stats, head office, footer, social links).
+The contact form writes to `contact_submissions` via `POST /api/contact` (Zod-validated,
+honeypot + rate-limited). No service-role key is used anywhere.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run lint
+npm run typecheck
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Environment (`.env.local`, gitignored):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...   # publishable/anon key only — never the service role
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Notes
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Brand is Natural Plantation**, not "NF Group" — the reference mock only supplied the visual
+  style (green + blue palette, layout, motion).
+- **NF Plantation finance disclaimer** (Finance Business Act No. 42 of 2011) is mandatory and
+  appears on Companies → NF Plantation and in the footer. Have counsel approve final wording.
+- Company facts are client-supplied placeholders where unverified — see `src/content/company.ts`.

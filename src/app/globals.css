@@ -1,26 +1,211 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =========================================================================
+   NATURAL PLANTATION — DESIGN TOKENS (Tailwind v4 CSS-first @theme)
+   Source of truth for colour, type, spacing, radius, shadow & motion.
+   Components must use these tokens only — never hard-coded values.
+   ========================================================================= */
+
+@theme {
+  /* ---- Brand: Blue (structure, trust, headings, navigation) ---- */
+  --color-blue-50: #eaf2f9;
+  --color-blue-100: #cfe0ef;
+  --color-blue-400: #3b82c4;
+  --color-blue-500: #1c6bb0;
+  --color-blue-600: #0f4c81; /* PRIMARY BLUE */
+  --color-blue-700: #0e4574;
+  --color-blue-800: #0b3a63;
+  --color-blue-900: #0a2e50;
+
+  /* ---- Brand: Green (CTAs, growth, agriculture, success) ---- */
+  --color-green-50: #ecf7f0;
+  --color-green-100: #cdebd9;
+  --color-green-400: #34a56f;
+  --color-green-500: #239a5e;
+  --color-green-600: #1b7a4b; /* PRIMARY GREEN */
+  --color-green-700: #15633d;
+  --color-green-900: #0e3f27;
+
+  /* ---- Accent: Gold (< 5% of surface) ---- */
+  --color-gold-300: #e3c766;
+  --color-gold-500: #c9a227;
+
+  /* ---- Neutrals ---- */
+  --color-ink: #0e1a23;
+  --color-slate-700: #334155;
+  --color-slate-500: #64748b;
+  --color-slate-400: #94a3b8;
+  --color-slate-200: #e2e8f0;
+  --color-cloud: #f5f8fa;
+  --color-white: #ffffff;
+
+  /* ---- Semantic ---- */
+  --color-success: #1b7a4b;
+  --color-info: #0f4c81;
+  --color-warning: #b7791f;
+  --color-danger: #c0392b;
+
+  /* ---- Typography ---- */
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-h2: clamp(2rem, 3vw + 0.5rem, 3rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: clamp(1.5rem, 1.5vw + 0.5rem, 2rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h4: 1.25rem;
+  --text-h4--line-height: 1.3;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.6;
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.12em;
+
+  /* ---- Layout ---- */
+  --container-max: 80rem; /* 1280px */
+
+  /* ---- Radius ---- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 2rem;
+
+  /* ---- Elevation ---- */
+  --shadow-soft: 0 1px 2px rgb(14 26 35 / 0.04), 0 1px 3px rgb(14 26 35 / 0.06);
+  --shadow-card: 0 4px 12px rgb(14 26 35 / 0.08), 0 2px 4px rgb(14 26 35 / 0.04);
+  --shadow-lifted: 0 18px 40px rgb(14 26 35 / 0.14), 0 6px 12px rgb(14 26 35 / 0.06);
+  --shadow-blue: 0 12px 30px rgb(15 76 129 / 0.22);
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* =========================================================================
+   BASE
+   ========================================================================= */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-white);
+    --foreground: var(--color-ink);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-blue-900);
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-green-100);
+    color: var(--color-green-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-blue-600);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* =========================================================================
+   REUSABLE UTILITIES
+   ========================================================================= */
+@layer components {
+  .container-max {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-max {
+      padding-inline: 2rem;
+    }
+  }
+
+  .section-y {
+    padding-block: 3.5rem;
+  }
+  @media (min-width: 768px) {
+    .section-y {
+      padding-block: 6rem;
+    }
+  }
+
+  .eyebrow {
+    font-size: var(--text-eyebrow);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Premium blue→green diagonal wash for hero & CTA bands */
+  .brand-gradient {
+    background-image: linear-gradient(
+      135deg,
+      var(--color-blue-900) 0%,
+      var(--color-blue-700) 45%,
+      var(--color-green-700) 100%
+    );
+  }
+
+  /* Slow, subtle background drift for inner-page hero photos */
+  .kenburns {
+    animation: kenburns 22s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.14) translate3d(-1.2%, -1.2%, 0);
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* =========================================================================
+   MOTION ACCESSIBILITY — honour prefers-reduced-motion globally
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
