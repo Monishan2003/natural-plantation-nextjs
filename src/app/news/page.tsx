@@ -21,7 +21,7 @@ export default async function NewsPage() {
         eyebrow="Newsroom"
         title="News & updates"
         lead="What's happening across the group — from new branches and harvests to community initiatives."
-        image="/images/hero-background.png"
+        image="https://images.unsplash.com/photo-1495020689067-958852a6565c?auto=format&fit=crop&w=2000&q=80"
       />
 
       <section className="section-y bg-cloud">

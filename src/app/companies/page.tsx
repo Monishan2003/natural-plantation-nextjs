@@ -26,7 +26,7 @@ export default async function CompaniesPage() {
         eyebrow="Our Companies"
         title="The companies behind the brand"
         lead="A diversified group structured for trust and growth — consumer goods, group holding, and organic agriculture, working as one."
-        image="/images/aloe-vera-plantation.png"
+        image="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80"
       />
 
       {companies.map((c, idx) => {

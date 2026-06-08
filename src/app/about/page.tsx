@@ -46,7 +46,7 @@ export default async function AboutPage() {
         eyebrow="About Natural Plantation"
         title="Built in the North, growing for all of Sri Lanka"
         lead="What began in Kilinochchi has grown into a diversified group spanning retail, organic agriculture and enterprise — with people and community at its centre."
-        image="/images/agri-team.png"
+        image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80"
       />
 
       {/* About stats */}
@@ -68,7 +68,7 @@ export default async function AboutPage() {
         <div className="container-max grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-xl)] shadow-lifted">
-              <Image src="/images/agri-team.png" alt="The Natural Plantation team" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=2000&q=80" alt="The Natural Plantation team" fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
             </div>
           </Reveal>
           <Reveal delay={0.1}>
@@ -206,7 +206,7 @@ export default async function AboutPage() {
                     <div className="grid items-center gap-8 overflow-hidden rounded-[var(--radius-xl)] bg-cloud shadow-card lg:grid-cols-[0.85fr_1.15fr]">
                       <div className="relative aspect-[3/4] w-full bg-slate-100 lg:aspect-auto lg:h-full lg:min-h-[28rem]">
                         <Image
-                          src={safeImage(founder.image_url, "/images/founder.jpg")}
+                          src={safeImage(founder.image_url, "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80")}
                           alt={founder.name.trim()}
                           fill
                           sizes="(max-width:1024px) 100vw, 40vw"
@@ -233,7 +233,7 @@ export default async function AboutPage() {
                           <Card className="h-full overflow-hidden">
                             <div className="relative aspect-[4/3] bg-blue-50">
                               <Image
-                                src={safeImage(m.image_url, "/images/founder.jpg")}
+                                src={safeImage(m.image_url, "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80")}
                                 alt={m.name.trim()}
                                 fill
                                 sizes="(max-width:768px) 100vw, 33vw"

@@ -25,7 +25,7 @@ export const COMPANY_HIGHLIGHTS: Record<string, string[]> = {
 
 /** Sector-relevant photo per company (used instead of the brand logos). */
 export const COMPANY_IMAGE: Record<string, string> = {
-  "natural-plantation": "/images/div-products.png",
-  "nf-plantation": "/images/div-finance.png",
+  "natural-plantation": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80",
+  "nf-plantation": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=80",
   "nature-farming": "/images/aloe-vera-plantation.png",
 };

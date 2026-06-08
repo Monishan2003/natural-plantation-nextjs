@@ -10,9 +10,9 @@ import { easeEntrance } from "@/lib/motion";
 import { BRAND } from "@/content/company";
 
 const SLIDES = [
-  "/images/project-coconut.png",
-  "/images/agri-team.png",
-  "/images/aloe-vera-plantation.png",
+  "https://images.unsplash.com/photo-1590005354167-6da97870c913?auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=2000&q=80",
 ];
 
 export function Hero() {
@@ -24,7 +24,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-[88vh] overflow-hidden md:min-h-[92vh]">
+    <section className="relative min-h-[88vh] overflow-hidden md:min-h-[92vh] mt-16">
       {/* Mobile: single static priority image (protects LCP) */}
       <div className="absolute inset-0 md:hidden">
         <Image

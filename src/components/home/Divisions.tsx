@@ -11,12 +11,12 @@ const META: Record<
   { img: string; badge: string; button: string }
 > = {
   "natural-plantation": {
-    img: "/images/div-products.png",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80",
     badge: "Retail & FMCG",
     button: "bg-green-600 hover:bg-green-700",
   },
   "nf-plantation": {
-    img: "/images/div-finance.png",
+    img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=80",
     badge: "Group Holding",
     button: "bg-blue-600 hover:bg-blue-700",
   },

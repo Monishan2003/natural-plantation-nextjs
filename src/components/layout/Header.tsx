@@ -47,53 +47,55 @@ export function Header() {
   const onHero = false;
 
   return (
-    <header
-      className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-soft backdrop-blur"
-    >
-      <div className="container-max flex h-16 items-center justify-between">
-        <Link href="/" aria-label="Natural Plantation — home">
-          <Logo invert={onHero} />
-        </Link>
-
-        <nav className="hidden items-center gap-8 lg:flex">
-          {NAV.map(([label, href]) => {
-            const active = pathname === href;
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                className={clsx(
-                  "text-sm font-medium transition-colors",
-                  onHero
-                    ? "text-white/90 hover:text-white"
-                    : active
-                      ? "text-green-700"
-                      : "text-slate-700 hover:text-blue-600",
-                )}
-              >
-                {label}
-              </Link>
-            );
-          })}
-          <Link href="/contact" className={buttonVariants("primary", "px-5 py-2 min-h-0")}>
-            Contact Us
+    <>
+      <header
+        className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-soft backdrop-blur"
+      >
+        <div className="container-max flex h-16 items-center justify-between">
+          <Link href="/" aria-label="Natural Plantation — home">
+            <Logo invert={onHero} />
           </Link>
-        </nav>
 
-        <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={open}
-          onClick={() => setOpen(true)}
-          className={clsx(
-            "flex h-11 w-11 items-center justify-center rounded-md lg:hidden",
-            onHero ? "text-white" : "text-blue-700",
-          )}
-        >
-          <Menu size={26} />
-        </button>
-      </div>
+          <nav className="hidden items-center gap-8 lg:flex">
+            {NAV.map(([label, href]) => {
+              const active = pathname === href;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  className={clsx(
+                    "text-sm font-medium transition-colors",
+                    onHero
+                      ? "text-white/90 hover:text-white"
+                      : active
+                        ? "text-green-700"
+                        : "text-slate-700 hover:text-blue-600",
+                  )}
+                >
+                  {label}
+                </Link>
+              );
+            })}
+            <Link href="/contact" className={buttonVariants("primary", "px-5 py-2 min-h-0")}>
+              Contact Us
+            </Link>
+          </nav>
+
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={open}
+            onClick={() => setOpen(true)}
+            className={clsx(
+              "flex h-11 w-11 items-center justify-center rounded-md lg:hidden",
+              onHero ? "text-white" : "text-blue-700",
+            )}
+          >
+            <Menu size={26} />
+          </button>
+        </div>
+      </header>
 
       <AnimatePresence>
         {open && (
@@ -155,6 +157,6 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

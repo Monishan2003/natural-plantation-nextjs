@@ -23,7 +23,7 @@ export default function ServicesPage() {
         eyebrow="What We Do"
         title="Services across the group"
         lead="Three companies, one connected offering — from the products on your shelf to the farm they came from and the structure that makes it all work."
-        image="/images/div-products.png"
+        image="https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=2000&q=80"
       />
 
       {/* Service groups by company */}

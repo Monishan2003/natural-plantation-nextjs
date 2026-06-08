@@ -37,7 +37,7 @@ export default async function ContactPage() {
         eyebrow="Contact Us"
         title="Let's start a conversation"
         lead="Questions, partnership ideas, or want to stock our products? Reach the right team below."
-        image="/images/project-coconut.png"
+        image="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80"
       />
 
       <section className="section-y bg-cloud">
