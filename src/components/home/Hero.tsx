@@ -10,7 +10,7 @@ import { easeEntrance } from "@/lib/motion";
 import { BRAND } from "@/content/company";
 
 const SLIDES = [
-  "https://images.unsplash.com/photo-1590005354167-6da97870c913?auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1528183429752-a97d0bf99b5a?auto=format&fit=crop&w=2000&q=80",
   "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=80",
   "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=2000&q=80",
 ];
