@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronRight } from "lucide-react";
 import { Logo } from "./Logo";
 import { buttonVariants } from "@/components/ui/Button";
 import { clsx } from "@/lib/clsx";
@@ -21,15 +21,7 @@ const NAV: [string, string][] = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [solid, setSolid] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // Lock body scroll + close on Escape while the mobile panel is open.
   useEffect(() => {
@@ -44,16 +36,12 @@ export function Header() {
     };
   }, [open]);
 
-  const onHero = false;
-
   return (
     <>
-      <header
-        className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-soft backdrop-blur"
-      >
+      <header className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-soft backdrop-blur">
         <div className="container-max flex h-16 items-center justify-between">
           <Link href="/" aria-label="Natural Plantation — home">
-            <Logo invert={onHero} />
+            <Logo />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -66,11 +54,7 @@ export function Header() {
                   aria-current={active ? "page" : undefined}
                   className={clsx(
                     "text-sm font-medium transition-colors",
-                    onHero
-                      ? "text-white/90 hover:text-white"
-                      : active
-                        ? "text-green-700"
-                        : "text-slate-700 hover:text-blue-600",
+                    active ? "text-green-700" : "text-slate-700 hover:text-blue-600",
                   )}
                 >
                   {label}
@@ -87,74 +71,100 @@ export function Header() {
             aria-label="Open menu"
             aria-expanded={open}
             onClick={() => setOpen(true)}
-            className={clsx(
-              "flex h-11 w-11 items-center justify-center rounded-md lg:hidden",
-              onHero ? "text-white" : "text-blue-700",
-            )}
+            className="flex h-11 w-11 items-center justify-center rounded-md text-blue-700 lg:hidden"
           >
-            <Menu size={26} />
+            <Menu size={24} />
           </button>
         </div>
       </header>
 
+      {/* Mobile slide-in drawer (3/4 width, not full screen) */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-blue-600 lg:hidden"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.4, ease: easeEntrance }}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="container-max flex h-16 items-center justify-between">
-              <Logo invert />
-              <button
-                type="button"
-                aria-label="Close menu"
-                autoFocus
-                onClick={() => setOpen(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-md text-white"
-              >
-                <X size={26} />
-              </button>
-            </div>
-
-            <motion.ul
-              className="container-max mt-6 flex flex-col gap-1"
-              initial="hidden"
-              animate="show"
-              variants={{ show: { transition: { staggerChildren: 0.06 } } }}
+          <>
+            <motion.div
+              key="backdrop"
+              className="fixed inset-0 z-[60] bg-ink/60 lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setOpen(false)}
+            />
+            <motion.aside
+              key="drawer"
+              className="fixed inset-y-0 right-0 z-[70] flex w-[78%] max-w-[330px] flex-col bg-blue-900 shadow-lifted lg:hidden"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.32, ease: easeEntrance }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
             >
-              {NAV.map(([label, href]) => (
-                <motion.li
-                  key={href}
-                  variants={{
-                    hidden: { opacity: 0, x: 24 },
-                    show: { opacity: 1, x: 0 },
-                  }}
+              <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
+                <Logo invert />
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  autoFocus
+                  onClick={() => setOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <X size={22} />
+                </button>
+              </div>
+
+              <motion.nav
+                className="flex flex-1 flex-col px-5 pt-3"
+                initial="hidden"
+                animate="show"
+                variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.08 } } }}
+              >
+                {NAV.map(([label, href]) => {
+                  const active = pathname === href;
+                  return (
+                    <motion.div
+                      key={href}
+                      variants={{
+                        hidden: { opacity: 0, x: 22 },
+                        show: { opacity: 1, x: 0 },
+                      }}
+                    >
+                      <Link
+                        href={href}
+                        onClick={() => setOpen(false)}
+                        aria-current={active ? "page" : undefined}
+                        className={clsx(
+                          "flex items-center justify-between border-b border-white/10 py-3.5 font-body text-base font-medium transition-colors",
+                          active ? "text-green-300" : "text-white/85 hover:text-white",
+                        )}
+                      >
+                        {label}
+                        <ChevronRight
+                          size={16}
+                          className={active ? "text-green-300" : "text-white/30"}
+                        />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+
+                <motion.div
+                  variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+                  className="mt-7"
                 >
                   <Link
-                    href={href}
+                    href="/contact"
                     onClick={() => setOpen(false)}
-                    className="block border-b border-white/10 py-4 font-display text-2xl font-semibold text-white"
+                    className={buttonVariants("primary", "w-full")}
                   >
-                    {label}
+                    Contact Us
                   </Link>
-                </motion.li>
-              ))}
-              <li className="mt-6">
-                <Link
-                  href="/contact"
-                  onClick={() => setOpen(false)}
-                  className={buttonVariants("white", "w-full")}
-                >
-                  Contact Us
-                </Link>
-              </li>
-            </motion.ul>
-          </motion.div>
+                </motion.div>
+              </motion.nav>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
     </>
