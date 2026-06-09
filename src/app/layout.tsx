@@ -20,7 +20,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://natural-plantation-website.vercel.app"),
+  metadataBase: new URL("https://natural-plantation-nextjs.vercel.app"),
   title: {
     default: `${BRAND.name} — ${BRAND.tagline}`,
     template: `%s · ${BRAND.name}`,
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_LK",
   },
-  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
