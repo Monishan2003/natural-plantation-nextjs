@@ -109,7 +109,7 @@ export async function Footer() {
               <li>
                 <a href={`mailto:${office.email}`} className="flex items-center gap-2.5 hover:text-green-300">
                   <Mail size={17} className="shrink-0 text-green-300" />
-                  {office.email}
+                  <span className="break-all">{office.email}</span>
                 </a>
               </li>
             </ul>

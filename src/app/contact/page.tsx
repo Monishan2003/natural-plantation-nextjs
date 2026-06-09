@@ -43,10 +43,12 @@ export default async function ContactPage() {
       <section className="section-y bg-cloud">
         <div className="container-max grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           {/* Form */}
-          <ContactForm />
+          <div className="min-w-0">
+            <ContactForm />
+          </div>
 
           {/* Details */}
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             {office && (
               <div className="rounded-[var(--radius-lg)] bg-white p-6 shadow-card md:p-8">
                 <h2 className="text-h4 font-semibold text-blue-900">{office.name}</h2>
@@ -69,7 +71,7 @@ export default async function ContactPage() {
                   <li>
                     <a href={`mailto:${office.email}`} className="flex items-center gap-3 hover:text-blue-600">
                       <Mail size={20} className="shrink-0 text-green-600" />
-                      {office.email}
+                      <span className="break-all">{office.email}</span>
                     </a>
                   </li>
                 </ul>
@@ -99,11 +101,17 @@ export default async function ContactPage() {
                 <h3 className="text-small font-semibold uppercase tracking-[0.1em] text-green-600">
                   Departments
                 </h3>
-                <ul className="mt-4 space-y-3">
+                <ul className="mt-4 space-y-3.5">
                   {departments.map((d) => (
-                    <li key={d.email} className="flex items-center justify-between gap-4">
-                      <span className="text-small text-slate-700">{d.label}</span>
-                      <a href={`mailto:${d.email}`} className="text-small font-medium text-blue-600 hover:text-green-700">
+                    <li
+                      key={d.email}
+                      className="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                    >
+                      <span className="shrink-0 text-small text-slate-700">{d.label}</span>
+                      <a
+                        href={`mailto:${d.email}`}
+                        className="break-all text-small font-medium text-blue-600 hover:text-green-700"
+                      >
                         {d.email}
                       </a>
                     </li>

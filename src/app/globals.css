@@ -103,6 +103,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   body {
@@ -116,6 +118,7 @@
     /* Never allow horizontal overflow to show a gap on the right (mobile) */
     overflow-x: clip;
     max-width: 100%;
+    overflow-wrap: break-word;
   }
 
   h1, h2, h3, h4 {
