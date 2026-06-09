@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { TESTIMONIALS } from "@/content/testimonials";
+import { Reveal } from "@/components/ui/Reveal";
+import { TESTIMONIALS, type Testimonial } from "@/content/testimonials";
 
 function initials(name: string) {
   return name
@@ -13,6 +14,20 @@ function initials(name: string) {
     .slice(0, 2)
     .join("")
     .toUpperCase();
+}
+
+function Author({ t }: { t: Testimonial }) {
+  return (
+    <div className="mt-6 flex items-center gap-4 border-t border-slate-200 pt-6">
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 font-display text-sm font-bold text-white">
+        {initials(t.name)}
+      </span>
+      <div>
+        <p className="font-semibold text-blue-900">{t.name}</p>
+        <p className="text-small text-slate-500">{t.role}</p>
+      </div>
+    </div>
+  );
 }
 
 export function Testimonials() {
@@ -27,8 +42,8 @@ export function Testimonials() {
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => setI((p) => (p + 1) % count), 6000);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setI((p) => (p + 1) % count), 6000);
+    return () => clearInterval(timer);
   }, [paused, count]);
 
   const t = TESTIMONIALS[i];
@@ -38,8 +53,24 @@ export function Testimonials() {
       <div className="container-max">
         <SectionHeader eyebrow="What Our Partners Say" title="Trusted across the North & East" />
 
+        {/* DESKTOP: all testimonials as an even 3-up grid */}
+        <div className="hidden gap-6 lg:grid lg:grid-cols-3">
+          {TESTIMONIALS.map((item, idx) => (
+            <Reveal key={item.name} delay={idx * 0.08}>
+              <figure className="flex h-full flex-col rounded-[var(--radius-xl)] bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lifted">
+                <Quote className="text-green-500" size={32} />
+                <blockquote className="mt-4 flex-1 text-body-lg font-medium leading-relaxed text-ink">
+                  “{item.quote}”
+                </blockquote>
+                <Author t={item} />
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* MOBILE / TABLET: single-card swipeable carousel (unchanged) */}
         <div
-          className="relative mx-auto max-w-3xl"
+          className="relative mx-auto max-w-3xl lg:hidden"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onFocusCapture={() => setPaused(true)}
@@ -62,15 +93,7 @@ export function Testimonials() {
               </AnimatePresence>
             </div>
 
-            <div className="mt-6 flex items-center gap-4 border-t border-slate-200 pt-6">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 font-display text-sm font-bold text-white">
-                {initials(t.name)}
-              </span>
-              <div>
-                <p className="font-semibold text-blue-900">{t.name}</p>
-                <p className="text-small text-slate-500">{t.role}</p>
-              </div>
-            </div>
+            <Author t={t} />
           </div>
 
           {/* Controls */}
