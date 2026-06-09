@@ -21,7 +21,7 @@ const META: Record<
     button: "bg-blue-600 hover:bg-blue-700",
   },
   "nature-farming": {
-    img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=2000&q=80",
+    img: "https://images.unsplash.com/photo-1547517023-d6636f40c12a?auto=format&fit=crop&w=2000&q=80",
     badge: "Agriculture",
     button: "bg-green-600 hover:bg-green-700",
   },

@@ -27,5 +27,5 @@ export const COMPANY_HIGHLIGHTS: Record<string, string[]> = {
 export const COMPANY_IMAGE: Record<string, string> = {
   "natural-plantation": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80",
   "nf-plantation": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=2000&q=80",
-  "nature-farming": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=2000&q=80",
+  "nature-farming": "https://images.unsplash.com/photo-1547517023-d6636f40c12a?auto=format&fit=crop&w=2000&q=80",
 };
