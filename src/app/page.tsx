@@ -6,26 +6,40 @@ import { Ecosystem } from "@/components/sections/Ecosystem";
 import { Testimonials } from "@/components/home/Testimonials";
 import { LatestNews } from "@/components/home/LatestNews";
 import { CTABand } from "@/components/sections/CTABand";
-import { getCompanies, getNews, getSiteSetting, type HomeStat } from "@/lib/queries";
+import {
+  getCompanies,
+  getNews,
+  getSiteSetting,
+  getTestimonials,
+  getEcosystem,
+  getPartnerLogos,
+  type HomeStat,
+} from "@/lib/queries";
 
 // Revalidate hourly — content is CMS-driven but changes infrequently.
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [companies, news, stats] = await Promise.all([
+  const [
+    companies, news, stats, testimonials, ecosystem, heroSlides, partnerLogos,
+  ] = await Promise.all([
     getCompanies(),
     getNews({ limit: 3 }),
     getSiteSetting<HomeStat[]>("home_stats"),
+    getTestimonials(),
+    getEcosystem(),
+    getSiteSetting<string[]>("hero_slides"),
+    getPartnerLogos(),
   ]);
 
   return (
     <>
-      <Hero />
-      <PartnerLogos />
+      <Hero slides={heroSlides ?? undefined} />
+      <PartnerLogos rows={partnerLogos} />
       <Divisions companies={companies} />
       <Stats stats={stats ?? []} />
-      <Ecosystem preview />
-      <Testimonials />
+      <Ecosystem preview rows={ecosystem} />
+      <Testimonials items={testimonials} />
       <LatestNews articles={news} />
       <CTABand />
     </>

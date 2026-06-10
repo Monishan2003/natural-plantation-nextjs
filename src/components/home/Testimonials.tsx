@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { TESTIMONIALS, type Testimonial } from "@/content/testimonials";
+import { TESTIMONIALS as FALLBACK, type Testimonial } from "@/content/testimonials";
 
 function initials(name: string) {
   return name
@@ -20,17 +20,22 @@ function Author({ t }: { t: Testimonial }) {
   return (
     <div className="mt-6 flex items-center gap-4 border-t border-slate-200 pt-6">
       <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 font-display text-sm font-bold text-white">
-        {initials(t.name)}
+        {initials(t.author_name)}
       </span>
       <div>
-        <p className="font-semibold text-blue-900">{t.name}</p>
+        <p className="font-semibold text-blue-900">{t.author_name}</p>
         <p className="text-small text-slate-500">{t.role}</p>
       </div>
     </div>
   );
 }
 
-export function Testimonials() {
+export function Testimonials({
+  items,
+}: {
+  items?: Testimonial[];
+} = {}) {
+  const TESTIMONIALS = items && items.length > 0 ? items : FALLBACK;
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const count = TESTIMONIALS.length;
@@ -56,7 +61,7 @@ export function Testimonials() {
         {/* DESKTOP: all testimonials as an even 3-up grid */}
         <div className="hidden gap-6 lg:grid lg:grid-cols-3">
           {TESTIMONIALS.map((item, idx) => (
-            <Reveal key={item.name} delay={idx * 0.08}>
+            <Reveal key={item.author_name} delay={idx * 0.08}>
               <figure className="flex h-full flex-col rounded-[var(--radius-xl)] bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lifted">
                 <Quote className="text-green-500" size={32} />
                 <blockquote className="mt-4 flex-1 text-body-lg font-medium leading-relaxed text-ink">

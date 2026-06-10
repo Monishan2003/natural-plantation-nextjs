@@ -2,10 +2,15 @@ import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Mark } from "./Logo";
 import { SOCIAL_ICON_MAP } from "./SocialIcons";
-import { getSiteSetting, type HeadOffice, type SocialLinks } from "@/lib/queries";
+import {
+  getSiteSetting,
+  type FooterColumn,
+  type HeadOffice,
+  type SocialLinks,
+} from "@/lib/queries";
 import { BRAND } from "@/content/company";
 
-const COLUMNS: { heading: string; links: { href: string; label: string }[] }[] = [
+const FALLBACK_COLUMNS: { heading: string; links: { href: string; label: string }[] }[] = [
   {
     heading: "Group",
     links: [
@@ -27,10 +32,12 @@ const COLUMNS: { heading: string; links: { href: string; label: string }[] }[] =
 ];
 
 export async function Footer() {
-  const [office, social] = await Promise.all([
+  const [office, social, dbCols] = await Promise.all([
     getSiteSetting<HeadOffice>("head_office"),
     getSiteSetting<SocialLinks>("social_links"),
+    getSiteSetting<FooterColumn[]>("footer_columns"),
   ]);
+  const COLUMNS = dbCols && dbCols.length > 0 ? dbCols : FALLBACK_COLUMNS;
 
   const year = new Date().getFullYear();
 

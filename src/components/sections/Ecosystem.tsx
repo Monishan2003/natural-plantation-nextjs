@@ -2,7 +2,42 @@ import Link from "next/link";
 import { ArrowRight, Smartphone, Globe, AppWindow } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ECOSYSTEM, type EcosystemProduct } from "@/content/ecosystem";
+import { ECOSYSTEM as FALLBACK, type EcosystemProduct } from "@/content/ecosystem";
+
+/** Both DB rows and the static fallback feed into the same shape used below. */
+interface NormalizedProduct {
+  name: string;
+  kind: string;
+  desc: string;
+  platforms: string[];
+  web?: string;
+  comingSoon?: boolean;
+}
+
+/** Lightweight DB row shape (subset). */
+interface DbEcosystemRow {
+  name: string;
+  kind: string;
+  description: string;
+  platforms: string[];
+  web_url: string | null;
+  coming_soon: boolean;
+}
+
+function fromDb(r: DbEcosystemRow): NormalizedProduct {
+  return {
+    name: r.name,
+    kind: r.kind,
+    desc: r.description,
+    platforms: r.platforms ?? [],
+    web: r.web_url ?? undefined,
+    comingSoon: r.coming_soon,
+  };
+}
+
+function fromFallback(p: EcosystemProduct): NormalizedProduct {
+  return { name: p.name, kind: p.kind, desc: p.desc, platforms: p.platforms, web: p.web, comingSoon: p.comingSoon };
+}
 
 const KIND_ICON: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   "Mobile app": Smartphone,
@@ -12,7 +47,7 @@ const KIND_ICON: Record<string, React.ComponentType<{ size?: number; className?:
   "Web app": AppWindow,
 };
 
-function ProductCard({ p, idx }: { p: EcosystemProduct; idx: number }) {
+function ProductCard({ p, idx }: { p: NormalizedProduct; idx: number }) {
   const Icon = KIND_ICON[p.kind] ?? Globe;
   return (
     <Reveal delay={idx * 0.06}>
@@ -54,8 +89,16 @@ function ProductCard({ p, idx }: { p: EcosystemProduct; idx: number }) {
   );
 }
 
-export function Ecosystem({ preview = false }: { preview?: boolean }) {
-  const items = preview ? ECOSYSTEM.slice(0, 3) : ECOSYSTEM;
+export function Ecosystem({
+  preview = false,
+  rows,
+}: {
+  preview?: boolean;
+  rows?: DbEcosystemRow[];
+}) {
+  const all: NormalizedProduct[] =
+    rows && rows.length > 0 ? rows.map(fromDb) : FALLBACK.map(fromFallback);
+  const items = preview ? all.slice(0, 3) : all;
 
   return (
     <section id="ecosystem" className="section-y bg-cloud">

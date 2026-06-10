@@ -127,6 +127,116 @@ export type Database = {
         Update: never;
         Relationships: [];
       };
+      testimonials: {
+        Row: {
+          id: string;
+          quote: string;
+          author_name: string;
+          role: string;
+          sort_order: number;
+          active: boolean;
+          created_at: string;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      ecosystem_products: {
+        Row: {
+          id: string;
+          name: string;
+          kind: string;
+          description: string;
+          platforms: string[];
+          ios_url: string | null;
+          android_url: string | null;
+          web_url: string | null;
+          coming_soon: boolean;
+          sort_order: number;
+          active: boolean;
+          created_at: string;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      service_groups: {
+        Row: {
+          id: string;
+          company_slug: string;
+          company_name: string;
+          blurb: string;
+          sort_order: number;
+          active: boolean;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      services_items: {
+        Row: {
+          id: string;
+          group_id: string;
+          title: string;
+          description: string;
+          icon: string;
+          sort_order: number;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      process_steps: {
+        Row: {
+          id: string;
+          title: string;
+          description: string;
+          sort_order: number;
+          active: boolean;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      values_items: {
+        Row: {
+          id: string;
+          title: string;
+          body: string;
+          icon: string;
+          sort_order: number;
+          active: boolean;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      company_highlights: {
+        Row: {
+          id: string;
+          company_id: string;
+          bullet: string;
+          sort_order: number;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      partner_logos: {
+        Row: {
+          id: string;
+          name: string;
+          kind: string;
+          image_url: string | null;
+          text_color: string | null;
+          bg_color: string | null;
+          sort_order: number;
+          active: boolean;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

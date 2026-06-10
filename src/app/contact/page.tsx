@@ -18,18 +18,24 @@ export const metadata: Metadata = {
     "Get in touch with Natural Plantation — head office in Kilinochchi, departments for general enquiries, B2B, partnerships and careers.",
 };
 
-const HOURS = [
+const FALLBACK_HOURS = [
   { day: "Monday – Friday", time: "8:30 AM – 5:30 PM" },
   { day: "Saturday", time: "9:00 AM – 1:00 PM" },
   { day: "Sunday & Holidays", time: "Closed" },
 ];
 
+interface PageHeroes { contact?: string }
+interface HourRow { day: string; time: string }
+
 export default async function ContactPage() {
-  const [office, departments, social] = await Promise.all([
+  const [office, departments, social, heroes, dbHours] = await Promise.all([
     getSiteSetting<HeadOffice>("head_office"),
     getSiteSetting<ContactDepartment[]>("contact_departments"),
     getSiteSetting<SocialLinks>("social_links"),
+    getSiteSetting<PageHeroes>("page_heroes"),
+    getSiteSetting<HourRow[]>("business_hours"),
   ]);
+  const HOURS = dbHours && dbHours.length > 0 ? dbHours : FALLBACK_HOURS;
 
   return (
     <>
@@ -37,7 +43,7 @@ export default async function ContactPage() {
         eyebrow="Contact Us"
         title="Let's start a conversation"
         lead="Questions, partnership ideas, or want to stock our products? Reach the right team below."
-        image="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80"
+        image={heroes?.contact ?? "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80"}
       />
 
       <section className="section-y bg-cloud">

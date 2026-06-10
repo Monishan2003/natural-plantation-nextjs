@@ -13,10 +13,14 @@ import {
   getTeam,
   getTimeline,
   getSiteSetting,
+  getValues,
   type KeyValueStat,
 } from "@/lib/queries";
 import { safeImage } from "@/lib/img";
-import { VISION, VALUES } from "@/content/company";
+import { VISION, VALUES as FALLBACK_VALUES } from "@/content/company";
+
+interface PageHeroes { about?: string }
+interface VisionMission { vision: string; mission: string }
 
 export const revalidate = 3600;
 
@@ -32,13 +36,24 @@ function LucideIcon({ name, ...props }: { name: string; size?: number; className
 }
 
 export default async function AboutPage() {
-  const [companies, team, timeline, aboutStats, governance] = await Promise.all([
+  const [
+    companies, team, timeline, aboutStats, governance,
+    dbValues, heroes, dbVisionMission,
+  ] = await Promise.all([
     getCompanies(),
     getTeam(),
     getTimeline(),
     getSiteSetting<KeyValueStat[]>("about_stats"),
     getSiteSetting<KeyValueStat[]>("governance_items"),
+    getValues(),
+    getSiteSetting<PageHeroes>("page_heroes"),
+    getSiteSetting<VisionMission>("vision_mission"),
   ]);
+  const values =
+    dbValues.length > 0
+      ? dbValues.map((v) => ({ title: v.title, body: v.body, icon: v.icon }))
+      : FALLBACK_VALUES;
+  const vision = dbVisionMission ?? VISION;
 
   return (
     <>
@@ -46,7 +61,7 @@ export default async function AboutPage() {
         eyebrow="About Natural Plantation"
         title="Built in the North, growing for all of Sri Lanka"
         lead="What began in Kilinochchi has grown into a diversified group spanning retail, organic agriculture and enterprise — with people and community at its centre."
-        image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80"
+        image={heroes?.about ?? "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80"}
       />
 
       {/* About stats */}
@@ -102,7 +117,7 @@ export default async function AboutPage() {
           <Reveal>
             <Card hover={false} className="h-full border-t-4 border-blue-600 p-8">
               <p className="eyebrow text-blue-600">Our Vision</p>
-              <p className="mt-4 text-body-lg text-ink">{VISION.vision}</p>
+              <p className="mt-4 text-body-lg text-ink">{vision.vision}</p>
             </Card>
           </Reveal>
           <Reveal delay={0.1}>
@@ -176,7 +191,7 @@ export default async function AboutPage() {
         <div className="container-max">
           <SectionHeader eyebrow="What We Stand For" title="Our values" />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {VALUES.map((v, idx) => (
+            {values.map((v, idx) => (
               <Reveal key={v.title} delay={idx * 0.06}>
                 <Card className="h-full p-6">
                   <span className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] bg-green-50 text-green-700">

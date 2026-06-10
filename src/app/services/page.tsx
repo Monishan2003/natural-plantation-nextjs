@@ -8,7 +8,15 @@ import { Card } from "@/components/ui/Card";
 import { LucideIcon } from "@/components/ui/LucideIcon";
 import { Ecosystem } from "@/components/sections/Ecosystem";
 import { CTABand } from "@/components/sections/CTABand";
-import { SERVICE_GROUPS, PROCESS_STEPS } from "@/content/services";
+import {
+  getServiceGroups,
+  getProcessSteps,
+  getEcosystem,
+  getSiteSetting,
+} from "@/lib/queries";
+import { SERVICE_GROUPS as FALLBACK_GROUPS, PROCESS_STEPS as FALLBACK_STEPS } from "@/content/services";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Services",
@@ -16,20 +24,56 @@ export const metadata: Metadata = {
     "What each company in the Natural Plantation group does — retail & FMCG, group holding & partnerships, and organic agricultural production.",
 };
 
-export default function ServicesPage() {
+interface PageHeroes {
+  about?: string;
+  services?: string;
+  companies?: string;
+  news?: string;
+  contact?: string;
+}
+
+export default async function ServicesPage() {
+  const [groups, steps, ecosystem, heroes] = await Promise.all([
+    getServiceGroups(),
+    getProcessSteps(),
+    getEcosystem(),
+    getSiteSetting<PageHeroes>("page_heroes"),
+  ]);
+
+  // Normalise: DB rows ({company_slug, company_name, services:[]}) → legacy
+  // shape ({companySlug, company, services:[{title,desc,icon}]}).
+  const renderedGroups =
+    groups.length > 0
+      ? groups.map((g) => ({
+          companySlug: g.company_slug,
+          company: g.company_name,
+          blurb: g.blurb,
+          services: g.services.map((s) => ({
+            title: s.title,
+            desc: s.description,
+            icon: s.icon,
+          })),
+        }))
+      : FALLBACK_GROUPS;
+
+  const renderedSteps =
+    steps.length > 0
+      ? steps.map((s) => ({ title: s.title, desc: s.description }))
+      : FALLBACK_STEPS;
+
   return (
     <>
       <PageHero
         eyebrow="What We Do"
         title="Services across the group"
         lead="Three companies, one connected offering — from the products on your shelf to the farm they came from and the structure that makes it all work."
-        image="https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=2000&q=80"
+        image={heroes?.services ?? "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=2000&q=80"}
       />
 
       {/* Service groups by company */}
       <section className="section-y bg-white">
         <div className="container-max space-y-16">
-          {SERVICE_GROUPS.map((group) => (
+          {renderedGroups.map((group) => (
             <div key={group.companySlug}>
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
@@ -72,7 +116,7 @@ export default function ServicesPage() {
             lead="Every relationship follows the same honest rhythm — from first conversation to long-term growth."
           />
           <div className="grid gap-8 md:grid-cols-4">
-            {PROCESS_STEPS.map((step, idx) => (
+            {renderedSteps.map((step, idx) => (
               <Reveal key={step.title} delay={idx * 0.08}>
                 <div className="relative">
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500 font-display text-lg font-bold text-white">
@@ -88,7 +132,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Full Digital Ecosystem showcase */}
-      <Ecosystem />
+      <Ecosystem rows={ecosystem} />
 
       <CTABand />
     </>

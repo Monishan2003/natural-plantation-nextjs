@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { NewsList } from "@/components/news/NewsList";
 import { CTABand } from "@/components/sections/CTABand";
-import { getNews } from "@/lib/queries";
+import { getNews, getSiteSetting } from "@/lib/queries";
+
+interface PageHeroes { news?: string }
 
 export const revalidate = 1800;
 
@@ -13,7 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function NewsPage() {
-  const articles = await getNews();
+  const [articles, heroes] = await Promise.all([
+    getNews(),
+    getSiteSetting<PageHeroes>("page_heroes"),
+  ]);
 
   return (
     <>
@@ -21,7 +26,7 @@ export default async function NewsPage() {
         eyebrow="Newsroom"
         title="News & updates"
         lead="What's happening across the group — from new branches and harvests to community initiatives."
-        image="https://images.unsplash.com/photo-1495020689067-958852a6565c?auto=format&fit=crop&w=2000&q=80"
+        image={heroes?.news ?? "https://images.unsplash.com/photo-1495020689067-958852a6565c?auto=format&fit=crop&w=2000&q=80"}
       />
 
       <section className="section-y bg-cloud">
