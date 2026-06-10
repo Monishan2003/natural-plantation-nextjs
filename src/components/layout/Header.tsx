@@ -15,9 +15,7 @@ const NAV: [string, string][] = [
   ["About", "/about"],
   ["Companies", "/companies"],
   ["Services", "/services"],
-  ["Blog", "/blog"],
   ["News", "/news"],
-  ["FAQ", "/faq"],
   ["Contact", "/contact"],
 ];
 
