@@ -12,7 +12,7 @@ import { BRAND } from "@/content/company";
 
 const FALLBACK_COLUMNS: { heading: string; links: { href: string; label: string }[] }[] = [
   {
-    heading: "Group",
+    heading: "Company",
     links: [
       { href: "/about", label: "About us" },
       { href: "/companies", label: "Our companies" },
@@ -21,12 +21,13 @@ const FALLBACK_COLUMNS: { heading: string; links: { href: string; label: string 
     ],
   },
   {
-    heading: "Discover",
+    heading: "Resources",
     links: [
+      { href: "/blog", label: "Blog" },
+      { href: "/faq", label: "FAQ" },
       { href: "/companies#natural-plantation", label: "Natural Plantation" },
       { href: "/companies#nf-plantation", label: "NF Plantation" },
       { href: "/companies#nature-farming", label: "Nature Farming" },
-      { href: "/contact", label: "Contact us" },
     ],
   },
 ];
@@ -37,33 +38,38 @@ export async function Footer() {
     getSiteSetting<SocialLinks>("social_links"),
     getSiteSetting<FooterColumn[]>("footer_columns"),
   ]);
-  const COLUMNS = dbCols && dbCols.length > 0 ? dbCols : FALLBACK_COLUMNS;
+  // Render only the first two link columns; column 4 is always the structured
+  // Contact block (address + phone + email) so we never duplicate contact info
+  // and the grid always reads as a balanced 4 columns.
+  const linkColumns = (dbCols && dbCols.length > 0 ? dbCols : FALLBACK_COLUMNS).slice(0, 2);
 
   const year = new Date().getFullYear();
 
   return (
     <footer className="border-t-2 border-green-500 bg-blue-900 text-white/80">
-      <div className="container-max grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Brand */}
-        <div>
+      <div className="container-max grid gap-x-10 gap-y-12 py-16 sm:grid-cols-2 lg:grid-cols-12">
+        {/* Brand — wider on desktop for balance */}
+        <div className="lg:col-span-4">
           <div className="flex items-center gap-2.5">
             <Mark className="h-9 w-9" />
-            <span className="font-display text-lg font-bold text-white">{BRAND.name}</span>
+            <span className="font-display text-lg font-bold tracking-tight text-white">
+              {BRAND.name}
+            </span>
           </div>
           <p className="mt-4 max-w-xs text-small leading-relaxed text-white/65">
             {BRAND.shortMission}
           </p>
           {social && (
-            <div className="mt-5 flex gap-3">
+            <div className="mt-6 flex gap-2.5">
               {Object.entries(SOCIAL_ICON_MAP).map(([key, Icon]) =>
                 social[key] ? (
                   <a
                     key={key}
                     href={social[key]}
                     aria-label={key}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-green-600"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/85 transition-colors hover:bg-green-600 hover:text-white"
                   >
-                    <Icon size={17} />
+                    <Icon size={16} />
                   </a>
                 ) : null,
               )}
@@ -72,17 +78,17 @@ export async function Footer() {
         </div>
 
         {/* Link columns */}
-        {COLUMNS.map((col) => (
-          <nav key={col.heading} aria-label={col.heading}>
-            <h3 className="text-small font-semibold uppercase tracking-[0.1em] text-white">
+        {linkColumns.map((col) => (
+          <nav key={col.heading} aria-label={col.heading} className="lg:col-span-2">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-white">
               {col.heading}
             </h3>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-5 space-y-3">
               {col.links.map((l) => (
-                <li key={l.href}>
+                <li key={`${col.heading}-${l.href}-${l.label}`}>
                   <Link
                     href={l.href}
-                    className="text-small text-white/70 transition-colors hover:text-green-300"
+                    className="text-small text-white/65 transition-colors hover:text-green-300"
                   >
                     {l.label}
                   </Link>
@@ -92,30 +98,36 @@ export async function Footer() {
           </nav>
         ))}
 
-        {/* Contact */}
+        {/* Contact — single, clean block (no duplication) */}
         {office && (
-          <div>
-            <h3 className="text-small font-semibold uppercase tracking-[0.1em] text-white">
-              Contact
+          <div className="lg:col-span-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-white">
+              Get in touch
             </h3>
-            <ul className="mt-4 space-y-3 text-small text-white/70">
-              <li className="flex gap-2.5">
-                <MapPin size={17} className="mt-0.5 shrink-0 text-green-300" />
-                <span>
+            <ul className="mt-5 space-y-3.5 text-small text-white/70">
+              <li className="flex items-start gap-2.5">
+                <MapPin size={16} className="mt-0.5 shrink-0 text-green-300" />
+                <span className="leading-relaxed">
                   {office.address_line1}
                   <br />
                   {office.address_line2}
                 </span>
               </li>
               <li>
-                <a href={`tel:${office.phone.replace(/\s/g, "")}`} className="flex items-center gap-2.5 hover:text-green-300">
-                  <Phone size={17} className="shrink-0 text-green-300" />
+                <a
+                  href={`tel:${office.phone.replace(/\s/g, "")}`}
+                  className="flex items-center gap-2.5 transition-colors hover:text-green-300"
+                >
+                  <Phone size={16} className="shrink-0 text-green-300" />
                   {office.phone}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${office.email}`} className="flex items-center gap-2.5 hover:text-green-300">
-                  <Mail size={17} className="shrink-0 text-green-300" />
+                <a
+                  href={`mailto:${office.email}`}
+                  className="flex items-center gap-2.5 transition-colors hover:text-green-300"
+                >
+                  <Mail size={16} className="shrink-0 text-green-300" />
                   <span className="break-all">{office.email}</span>
                 </a>
               </li>
