@@ -221,6 +221,77 @@ export async function getPartnerLogos(): Promise<PartnerLogo[]> {
   return listFrom<PartnerLogo>("partner_logos");
 }
 
+/* ---------------- FAQs ---------------- */
+export interface FaqCategory {
+  id: string;
+  slug: string;
+  name_en: string;
+  icon: string | null;
+  display_order: number | null;
+}
+export interface Faq {
+  id: string;
+  category_id: string;
+  question_en: string;
+  answer_en: string;
+  display_order: number | null;
+  is_featured: boolean | null;
+}
+
+export async function getFaqCategories(): Promise<FaqCategory[]> {
+  const { data } = await supabase
+    .from("faq_categories")
+    .select("id, slug, name_en, icon, display_order")
+    .order("display_order", { ascending: true });
+  return (data ?? []) as FaqCategory[];
+}
+
+export async function getFaqs(): Promise<Faq[]> {
+  const { data } = await supabase
+    .from("faqs")
+    .select("id, category_id, question_en, answer_en, display_order, is_featured")
+    .order("display_order", { ascending: true });
+  return (data ?? []) as Faq[];
+}
+
+/* ---------------- Blog ---------------- */
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  author: string;
+  excerpt: string | null;
+  content: string | null;
+  cover_url: string | null;
+  reading_time: string | null;
+  tags: string[];
+  status: string;
+  published_at: string | null;
+}
+
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  const { data } = await supabase
+    .from("blog_posts")
+    .select(
+      "id, slug, title, author, excerpt, content, cover_url, reading_time, tags, status, published_at",
+    )
+    .eq("status", "published")
+    .order("published_at", { ascending: false });
+  return (data ?? []) as BlogPost[];
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  const { data } = await supabase
+    .from("blog_posts")
+    .select(
+      "id, slug, title, author, excerpt, content, cover_url, reading_time, tags, status, published_at",
+    )
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
+  return (data as BlogPost | null) ?? null;
+}
+
 // Helper type used by the queries above to silence TS where columns aren't typed.
 type _Unused = Generic;
 export type { _Unused as _GenericRow };

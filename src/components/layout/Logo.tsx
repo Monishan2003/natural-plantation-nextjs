@@ -37,7 +37,7 @@ export function Logo({
       <span className="flex flex-col leading-none">
         <span
           className={clsx(
-            "font-display text-[1.05rem] font-bold tracking-tight",
+            "font-display text-[1.1rem] font-bold tracking-tight",
             invert ? "text-white" : "text-blue-900",
           )}
         >
@@ -45,11 +45,11 @@ export function Logo({
         </span>
         <span
           className={clsx(
-            "text-[0.62rem] font-semibold uppercase tracking-[0.18em]",
+            "mt-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.18em]",
             invert ? "text-white/70" : "text-green-600",
           )}
         >
-          Group of Companies
+          Rooted in the North
         </span>
       </span>
     </span>

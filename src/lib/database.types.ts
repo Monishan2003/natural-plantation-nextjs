@@ -237,6 +237,55 @@ export type Database = {
         Update: never;
         Relationships: [];
       };
+      faq_categories: {
+        Row: {
+          id: string;
+          slug: string;
+          name_en: string;
+          icon: string | null;
+          display_order: number | null;
+          created_at: string | null;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      faqs: {
+        Row: {
+          id: string;
+          category_id: string;
+          question_en: string;
+          answer_en: string;
+          display_order: number | null;
+          is_featured: boolean | null;
+          helpful_count: number | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
+      blog_posts: {
+        Row: {
+          id: string;
+          slug: string;
+          title: string;
+          author: string;
+          excerpt: string | null;
+          content: string | null;
+          cover_url: string | null;
+          reading_time: string | null;
+          tags: string[];
+          status: string;
+          published_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

@@ -79,7 +79,7 @@ export function Hero({ slides }: { slides?: string[] } = {}) {
           transition={{ duration: 0.6, ease: easeEntrance }}
           className="eyebrow text-green-300"
         >
-          {BRAND.name} · Group of Companies
+          {BRAND.name} · Sri Lanka
         </motion.p>
 
         <motion.h1

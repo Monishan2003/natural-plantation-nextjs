@@ -13,9 +13,11 @@ import { easeEntrance } from "@/lib/motion";
 const NAV: [string, string][] = [
   ["Home", "/"],
   ["About", "/about"],
-  ["Services", "/services"],
   ["Companies", "/companies"],
+  ["Services", "/services"],
+  ["Blog", "/blog"],
   ["News", "/news"],
+  ["FAQ", "/faq"],
   ["Contact", "/contact"],
 ];
 

@@ -9,7 +9,7 @@ export const BRAND = {
   legalName: "Natural Plantation (Pvt) Ltd",
   regNumber: "PV 00334432",
   tagline: "Rooted in the North. Growing for Sri Lanka.",
-  footerLong: "Natural Plantation — Group of Companies · PV 00334432",
+  footerLong: "Natural Plantation (Pvt) Ltd · PV 00334432",
   shortMission:
     "A diversified Sri Lankan group in retail, agriculture and enterprise — rooted in the Northern Province, growing nationwide.",
 } as const;
