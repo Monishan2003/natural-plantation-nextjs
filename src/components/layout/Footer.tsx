@@ -32,12 +32,24 @@ const FALLBACK_COLUMNS: { heading: string; links: { href: string; label: string 
   },
 ];
 
+interface BrandValue {
+  name: string;
+  shortMission: string;
+  footerLong: string;
+}
+
 export async function Footer() {
-  const [office, social, dbCols] = await Promise.all([
+  const [office, social, dbCols, dbBrand] = await Promise.all([
     getSiteSetting<HeadOffice>("head_office"),
     getSiteSetting<SocialLinks>("social_links"),
     getSiteSetting<FooterColumn[]>("footer_columns"),
+    getSiteSetting<BrandValue>("brand"),
   ]);
+  const brand = {
+    name: dbBrand?.name || BRAND.name,
+    shortMission: dbBrand?.shortMission || BRAND.shortMission,
+    footerLong: dbBrand?.footerLong || BRAND.footerLong,
+  };
   // Render only the first two link columns; column 4 is always the structured
   // Contact block (address + phone + email) so we never duplicate contact info
   // and the grid always reads as a balanced 4 columns.
@@ -53,11 +65,11 @@ export async function Footer() {
           <div className="flex items-center gap-2.5">
             <Mark className="h-9 w-9" />
             <span className="font-display text-lg font-bold tracking-tight text-white">
-              {BRAND.name}
+              {brand.name}
             </span>
           </div>
           <p className="mt-4 max-w-xs text-small leading-relaxed text-white/65">
-            {BRAND.shortMission}
+            {brand.shortMission}
           </p>
           {social && (
             <div className="mt-6 flex gap-2.5">
@@ -140,7 +152,7 @@ export async function Footer() {
       <div className="border-t border-white/10">
         <div className="container-max flex flex-col gap-2 py-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {BRAND.footerLong}. All rights reserved.
+            © {year} {brand.footerLong}. All rights reserved.
           </p>
           <p>Rooted in the North. Growing for Sri Lanka.</p>
         </div>

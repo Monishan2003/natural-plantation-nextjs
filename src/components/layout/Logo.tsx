@@ -27,9 +27,11 @@ export function Mark({ className }: { className?: string }) {
 export function Logo({
   invert = false,
   className,
+  name = BRAND.name,
 }: {
   invert?: boolean;
   className?: string;
+  name?: string;
 }) {
   return (
     <span className={clsx("inline-flex items-center gap-2.5", className)}>
@@ -41,7 +43,7 @@ export function Logo({
             invert ? "text-white" : "text-blue-900",
           )}
         >
-          {BRAND.name}
+          {name}
         </span>
         <span
           className={clsx(

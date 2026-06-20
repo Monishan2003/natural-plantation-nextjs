@@ -25,12 +25,14 @@ export const metadata: Metadata = {
 interface PageHeroes { companies?: string }
 
 export default async function CompaniesPage() {
-  const [companies, facts, dbHighlights, heroes] = await Promise.all([
+  const [companies, facts, dbHighlights, heroes, dbDisclaimer] = await Promise.all([
     getCompanies(),
     getCompanyFacts(),
     getCompanyHighlights(),
     getSiteSetting<PageHeroes>("page_heroes"),
+    getSiteSetting<string>("finance_disclaimer"),
   ]);
+  const disclaimerText = dbDisclaimer || FINANCE_DISCLAIMER;
   // Index DB highlights by company_id; fall back to static map if empty.
   const dbHighlightsByCo = new Map<string, string[]>();
   dbHighlights.forEach((h) => {
@@ -128,7 +130,7 @@ export default async function CompaniesPage() {
 
                     {c.disclaimer && (
                       <div className="mt-7">
-                        <DisclaimerCallout text={FINANCE_DISCLAIMER} />
+                        <DisclaimerCallout text={disclaimerText} />
                       </div>
                     )}
                   </div>

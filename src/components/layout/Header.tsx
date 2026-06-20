@@ -19,7 +19,7 @@ const NAV: [string, string][] = [
   ["Contact", "/contact"],
 ];
 
-export function Header() {
+export function Header({ brandName }: { brandName?: string }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -41,7 +41,7 @@ export function Header() {
       <header className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-soft backdrop-blur">
         <div className="container-max flex h-16 items-center justify-between">
           <Link href="/" aria-label="Natural Plantation — home">
-            <Logo />
+            <Logo name={brandName} />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -103,7 +103,7 @@ export function Header() {
               aria-label="Menu"
             >
               <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
-                <Logo invert />
+                <Logo invert name={brandName} />
                 <button
                   type="button"
                   aria-label="Close menu"
