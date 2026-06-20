@@ -32,6 +32,7 @@ jobs:
             cat > .env.production << 'ENVEOF'
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+            REVALIDATE_TOKEN=${{ secrets.REVALIDATE_TOKEN }}
             ENVEOF
 
             echo "Building and restarting containers..."
